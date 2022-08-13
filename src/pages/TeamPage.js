@@ -13,16 +13,16 @@ export const TeamPage= () => {
         setTeam(data);
     }
     fetchMatches();
-}
+},[]
     );
+if(!team) return null;
   return (
     <div className="TeamPage">
-       <h1>{team?team.teamName:"nodata"} </h1>
-       <MatchDetailCard/>
-       <MatchSmallCard/>
-       <MatchSmallCard/>
-       <MatchSmallCard/>
-       <MatchSmallCard/>
+       <h1>{team.teamName} </h1>
+       <MatchDetailCard match={team.matches[0]}/>
+        {team.matches.slice(1).map(match=>
+            <MatchSmallCard match={match}/>
+        )} 
     </div>
   );
 }
