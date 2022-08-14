@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { MatchDetailCard } from '../components/MatchDetailCard';
 import { MatchSmallCard } from '../components/MatchSmallCard';
 
 export const TeamPage= () => {
     const [team,setTeam] = useState();
-
+    const {teamName} = useParams();
     useEffect(
 ()=>{
     const fetchMatches = async () =>{
-        const reponse = await fetch('http://localhost:8080/team/Kings XI Punjab');
+        const reponse = await fetch('http://localhost:8080/team/'+teamName);
         const data = await reponse.json();
         setTeam(data);
     }
     fetchMatches();
-},[]
+},[teamName]
     );
-if(!team) return null;
+if(!team || !team.teamName) return <h1>Team Not found</h1>;
   return (
     <div className="TeamPage">
        <h1>{team.teamName} </h1>
-       <MatchDetailCard match={team.matches[0]}/>
+       <MatchDetailCard match={team.matches[0]} teamName={teamName}/>
         {team.matches.slice(1).map(match=>
-            <MatchSmallCard match={match}/>
+            <MatchSmallCard match={match} teamName={teamName}/>
         )} 
     </div>
   );
